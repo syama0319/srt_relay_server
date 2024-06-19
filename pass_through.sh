@@ -1,5 +1,15 @@
 #!/bin/sh
 
+# logファイルのディレクトリ
+LOG_DIR=$PWD/logs/
+
+# logのディレクトリが存在するかチェック
+if ! [ -d "$LOG_DIR" ]; then
+    echo "ディレクトリ $LOG_DIR は存在しません。新しく作成します。"
+    # ディレクトリを作成
+    mkdir -p "$LOG_DIR"
+fi
+
 # helpオプション
 function usage{
     cat <<EOM
@@ -34,6 +44,7 @@ done
 
 while :; do
   sleep 2
+  GST_DEBUG_NO_COLOR=1 GST_DEBUG=*:3 GST_DEBUG=multifilesink:7 GST_DEBUG_FILE=$LOG_DIR$(date "+%H-%M-%S-%3N").log \
   gst-launch-1.0 -v \
     srtserversrc uri="srt://:$RXP" latency=$LATENCY ! \
     queue leaky=2 ! srtserversink uri="srt://:$TXP"
