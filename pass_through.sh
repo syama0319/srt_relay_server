@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+LATENCY=125
+RXP=7001
+TXP=7002
 
 # logファイルのディレクトリ
 LOG_DIR=$PWD/logs/
@@ -11,7 +14,7 @@ if ! [ -d "$LOG_DIR" ]; then
 fi
 
 # helpオプション
-function usage{
+function usage {
     cat <<EOM
 Usage: $(basename "$0") [OPTION]...
   -h          Display help
@@ -19,22 +22,23 @@ Usage: $(basename "$0") [OPTION]...
   -r VALUE    RX Port (default: 7001)
   -t VALUE    TX Port (default: 7002)
 EOM
+  exit 2
 }
 
 # 引数別の処理定義
 while getopts ":l:r:t:h" optKey; do
   case "$optKey" in
     l)
-      LATENCY=${OPTARG:-125}
-      echo "latency = ${OPTARG}"
+      LATENCY=${OPTARG}
+      echo "latency = ${LATENCY}"
       ;;
     r)
-      RXP=${OPTARG:-7001}
-      echo "RX Port = ${OPTARG}"
+      RXP=${OPTARG}
+      echo "RX Port = ${RXP}"
       ;;
     t)
-      TXP=${OPTARG:-7002}
-      echo "TX Port = ${OPTARG}"
+      TXP=${OPTARG}
+      echo "TX Port = ${TXP}"
       ;;
     '-h'|'--help'|* )
       usage
